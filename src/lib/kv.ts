@@ -24,3 +24,19 @@ export async function recordVote(ip: string, brownieId: string): Promise<void> {
   await kv.set(voterKey(ip), brownieId);
   await kv.hincrby(VOTES_KEY, brownieId, 1);
 }
+
+export async function changeVote(
+  ip: string,
+  previousBrownieId: string,
+  nextBrownieId: string
+): Promise<void> {
+  if (previousBrownieId === nextBrownieId) return;
+  await kv.hincrby(VOTES_KEY, previousBrownieId, -1);
+  await kv.hincrby(VOTES_KEY, nextBrownieId, 1);
+  await kv.set(voterKey(ip), nextBrownieId);
+}
+
+export async function clearVote(ip: string, brownieId: string): Promise<void> {
+  await kv.hincrby(VOTES_KEY, brownieId, -1);
+  await kv.del(voterKey(ip));
+}

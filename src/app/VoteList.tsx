@@ -12,7 +12,9 @@ type Props = {
 type VoteResponse = {
   success: boolean;
   message?: string;
-  votedFor?: string;
+  votedFor?: string | null;
+  previousVote?: string;
+  changed?: boolean;
 };
 
 export default function VoteList({ brownies, initialCounts, initialVote }: Props) {
@@ -21,9 +23,11 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
   const [status, setStatus] = useState<string>("");
   const [pending, setPending] = useState<string | null>(null);
 
-  async function vote(brownieId: string) {
+  async function castVote(brownieId: string) {
+    if (votedFor === brownieId) return;
     setPending(brownieId);
     setStatus("");
+    const previousVote = votedFor;
     try {
       const res = await fetch("/api/vote", {
         method: "POST",
@@ -32,12 +36,43 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
       });
       const data: VoteResponse = await res.json();
       if (res.ok && data.success) {
-        setCounts((prev) => ({ ...prev, [brownieId]: (prev[brownieId] ?? 0) + 1 }));
+        setCounts((prev) => {
+          const next = { ...prev };
+          if (previousVote && previousVote !== brownieId) {
+            next[previousVote] = Math.max(0, (next[previousVote] ?? 0) - 1);
+          }
+          if (previousVote !== brownieId) {
+            next[brownieId] = (next[brownieId] ?? 0) + 1;
+          }
+          return next;
+        });
         setVotedFor(brownieId);
-        setStatus("Thanks for voting!");
-      } else if (res.status === 409 && data.votedFor) {
-        setVotedFor(data.votedFor);
-        setStatus("You've already voted from this network.");
+        setStatus(previousVote ? "Vote updated." : "Thanks for voting!");
+      } else {
+        setStatus(data.message ?? "Something went wrong.");
+      }
+    } catch {
+      setStatus("Network error. Try again.");
+    } finally {
+      setPending(null);
+    }
+  }
+
+  async function removeVote() {
+    if (!votedFor) return;
+    const previousVote = votedFor;
+    setPending(previousVote);
+    setStatus("");
+    try {
+      const res = await fetch("/api/vote", { method: "DELETE" });
+      const data: VoteResponse = await res.json();
+      if (res.ok && data.success) {
+        setCounts((prev) => ({
+          ...prev,
+          [previousVote]: Math.max(0, (prev[previousVote] ?? 0) - 1),
+        }));
+        setVotedFor(null);
+        setStatus("Vote removed. Pick another brownie if you like.");
       } else {
         setStatus(data.message ?? "Something went wrong.");
       }
@@ -53,6 +88,7 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
       <div className="grid">
         {brownies.map((b) => {
           const isVoted = votedFor === b.id;
+          const isBusy = pending !== null;
           return (
             <div key={b.id} className={`card${isVoted ? " voted" : ""}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -62,12 +98,15 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
                 <p>{b.description}</p>
                 <div className="footer">
                   <span className="votes">{counts[b.id] ?? 0} votes</span>
-                  <button
-                    onClick={() => vote(b.id)}
-                    disabled={votedFor !== null || pending !== null}
-                  >
-                    {isVoted ? "Your pick" : "Vote"}
-                  </button>
+                  {isVoted ? (
+                    <button onClick={removeVote} disabled={isBusy}>
+                      Remove vote
+                    </button>
+                  ) : (
+                    <button onClick={() => castVote(b.id)} disabled={isBusy}>
+                      {votedFor ? "Switch to this" : "Vote"}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

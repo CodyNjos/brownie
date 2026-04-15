@@ -20,7 +20,7 @@ Open http://localhost:3000.
 
 ## Editing brownies
 
-Edit `src/brownies.ts` and drop matching images into `public/brownies/`. See `public/brownies/README.md` for filenames.
+Drop image files into `public/brownies/`. That's the whole workflow — the brownie list is auto-generated from filenames on every `npm run dev` / `npm run build`. Filename becomes the id; title-cased filename (with `-`/`_` as spaces) becomes the display name. `src/brownies.ts` is a generated file; don't edit it by hand.
 
 ## How voting works
 

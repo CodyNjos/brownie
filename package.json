@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate:brownies": "node scripts/generate-brownies.mjs",
+    "predev": "node scripts/generate-brownies.mjs",
+    "prebuild": "node scripts/generate-brownies.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

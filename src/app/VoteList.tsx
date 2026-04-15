@@ -83,6 +83,15 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
     }
   }
 
+  if (brownies.length === 0) {
+    return (
+      <div className="empty">
+        No brownies yet. Drop image files into <code>public/brownies/</code> and
+        restart the dev server.
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="grid">
@@ -95,7 +104,6 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
               <img src={b.image} alt={b.name} />
               <div className="body">
                 <h2>{b.name}</h2>
-                <p>{b.description}</p>
                 <div className="footer">
                   <span className="votes">{counts[b.id] ?? 0} votes</span>
                   {isVoted ? (

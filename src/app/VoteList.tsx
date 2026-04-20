@@ -83,6 +83,14 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
     }
   }
 
+  const sorted = [...brownies].sort(
+    (a, b) => (counts[b.id] ?? 0) - (counts[a.id] ?? 0)
+  );
+  const top3 = sorted.slice(0, 3);
+  // Podium order: 3rd (left), 1st (center), 2nd (right)
+  const podiumOrder = [top3[2], top3[0], top3[1]].filter(Boolean);
+  const placeClass = ["third", "first", "second"];
+
   if (brownies.length === 0) {
     return (
       <div className="empty">
@@ -94,6 +102,20 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
 
   return (
     <>
+      {podiumOrder.length >= 3 && (
+        <div className="podium">
+          {podiumOrder.map((b, i) => (
+            <div key={b.id} className={`podium-item ${placeClass[i]}`}>
+              <div className="podium-img-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={b.image} alt={b.name} />
+              </div>
+              <div className="podium-label">{b.name}</div>
+              <div className="podium-votes">{counts[b.id] ?? 0} votes</div>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="grid">
         {brownies.map((b) => {
           const isVoted = votedFor === b.id;

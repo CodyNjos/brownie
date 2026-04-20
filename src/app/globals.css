@@ -21,7 +21,7 @@ body {
 }
 
 main {
-  max-width: 1200px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
 }
@@ -59,7 +59,7 @@ h1 {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: contain;
-  background: #fff;
+  background: var(--card);
 }
 
 .card .body {

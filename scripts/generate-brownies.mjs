@@ -31,7 +31,12 @@ function readImageFiles() {
       if (name.startsWith(".")) return false;
       return true;
     })
-    .sort((a, b) => a.localeCompare(b));
+    .sort((a, b) => {
+      const aFirst = parse(a).name === "I Did Not Eat Any Brownies" ? -1 : 0;
+      const bFirst = parse(b).name === "I Did Not Eat Any Brownies" ? -1 : 0;
+      if (aFirst !== bFirst) return aFirst - bFirst;
+      return a.localeCompare(b);
+    });
 }
 
 const files = readImageFiles();

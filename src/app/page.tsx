@@ -14,7 +14,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      <h1>Brownie Vote</h1>
+      <h1><span className="scheels">SCHEELS<sup>TM</sup></span> Official Brownie Vote</h1>
       <p className="subtitle">Pick your favorite. One vote per person.</p>
       <VoteList brownies={BROWNIES} initialCounts={counts} initialVote={existingVote} />
     </main>

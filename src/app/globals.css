@@ -216,7 +216,7 @@ h1 {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.25rem;
   opacity: 0;
-  animation: fade-in 1.5s ease-out 12s forwards;
+  animation: fade-in 1.5s ease-out 9.2s forwards;
 }
 
 @keyframes fade-in {

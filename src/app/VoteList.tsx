@@ -103,6 +103,7 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
 
   return (
     <>
+      {podiumOrder.length >= 3 && <div className="star-wipe" />}
       {podiumOrder.length >= 3 && (
         <div className="podium">
           {podiumOrder.map((b, i) => (

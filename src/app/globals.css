@@ -57,6 +57,56 @@ h1 {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  opacity: 0;
+  animation: 0.8s ease-out forwards;
+}
+
+.podium-item.third {
+  animation-name: slide-from-bottom-left;
+  animation-delay: 0.1s;
+}
+
+.podium-item.first {
+  animation-name: slide-from-bottom;
+  animation-delay: 0.3s;
+}
+
+.podium-item.second {
+  animation-name: slide-from-top-right;
+  animation-delay: 0.2s;
+}
+
+@keyframes slide-from-bottom-left {
+  from {
+    opacity: 0;
+    transform: translate(-120px, 100px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slide-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(120px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-from-top-right {
+  from {
+    opacity: 0;
+    transform: translate(120px, -100px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 }
 
 .podium-img-wrap {

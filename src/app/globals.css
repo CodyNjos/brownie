@@ -59,7 +59,7 @@ h1 {
   opacity: 0;
   pointer-events: none;
   z-index: 1000;
-  animation: star-wipe 2.2s ease-out 7.8s forwards;
+  animation: star-wipe 4s ease-out 7.8s forwards;
 }
 
 @keyframes star-wipe {

@@ -131,11 +131,11 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
                 <div className="footer">
                   <span className="votes">{counts[b.id] ?? 0} votes</span>
                   {isVoted ? (
-                    <button onClick={removeVote} disabled={isBusy}>
+                    <button onClick={removeVote} disabled>
                       Remove vote
                     </button>
                   ) : (
-                    <button onClick={() => castVote(b.id)} disabled={isBusy}>
+                    <button disabled>
                       {votedFor ? "Switch to this" : "Vote"}
                     </button>
                   )}

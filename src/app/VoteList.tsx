@@ -90,6 +90,7 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
   // Podium order: 3rd (left), 1st (center), 2nd (right)
   const podiumOrder = [top3[2], top3[0], top3[1]].filter(Boolean);
   const placeClass = ["third", "first", "second"];
+  const placeMedal = ["\u{1F949}", "\u{1F947}", "\u{1F948}"];
 
   if (brownies.length === 0) {
     return (
@@ -110,7 +111,7 @@ export default function VoteList({ brownies, initialCounts, initialVote }: Props
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={b.image} alt={b.name} />
               </div>
-              <div className="podium-label">{b.name}</div>
+              <div className="podium-label">{placeMedal[i]} {b.name} {placeMedal[i]}</div>
               <div className="podium-votes">{counts[b.id] ?? 0} votes</div>
             </div>
           ))}

@@ -59,7 +59,7 @@ h1 {
   align-items: center;
   text-align: center;
   opacity: 0;
-  animation: 0.8s ease-out forwards;
+  animation: 1.5s ease-out forwards;
 }
 
 .podium-item.third {
@@ -67,46 +67,46 @@ h1 {
   animation-delay: 0s;
 }
 
-.podium-item.first {
-  animation-name: slide-from-bottom;
-  animation-delay: 0.8s;
-}
-
 .podium-item.second {
   animation-name: slide-from-top-right;
-  animation-delay: 1.6s;
+  animation-delay: 3.5s;
+}
+
+.podium-item.first {
+  animation-name: slide-from-bottom;
+  animation-delay: 7s;
 }
 
 @keyframes slide-from-bottom-left {
   from {
     opacity: 0;
-    transform: translate(-120px, 100vh);
+    transform: translate(-120px, 100vh) rotate(-720deg);
   }
   to {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 
 @keyframes slide-from-bottom {
   from {
     opacity: 0;
-    transform: translateY(100vh);
+    transform: translateY(100vh) rotate(720deg);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotate(0deg);
   }
 }
 
 @keyframes slide-from-top-right {
   from {
     opacity: 0;
-    transform: translate(120px, 100vh);
+    transform: translate(120px, 100vh) rotate(720deg);
   }
   to {
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate(0, 0) rotate(0deg);
   }
 }
 

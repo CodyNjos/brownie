@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { BROWNIES } from "@/brownies";
 import { changeVote, clearVote, getVoterChoice, recordVote } from "@/lib/kv";
-import { getClientIpFromRequest } from "@/lib/ip";
-
-export const runtime = "edge";
+import { getOrCreateVoterId } from "@/lib/voter-id";
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as { brownieId?: string } | null;
@@ -16,21 +14,15 @@ export async function POST(req: Request) {
     );
   }
 
-  const ip = getClientIpFromRequest(req);
-  if (ip === "unknown") {
-    return NextResponse.json(
-      { success: false, message: "Could not identify voter." },
-      { status: 400 }
-    );
-  }
+  const voterId = await getOrCreateVoterId();
 
-  const existing = await getVoterChoice(ip);
+  const existing = await getVoterChoice(voterId);
   if (existing === brownieId) {
     return NextResponse.json({ success: true, votedFor: brownieId, changed: false });
   }
 
   if (existing) {
-    await changeVote(ip, existing, brownieId);
+    await changeVote(voterId, existing, brownieId);
     return NextResponse.json({
       success: true,
       votedFor: brownieId,
@@ -39,24 +31,18 @@ export async function POST(req: Request) {
     });
   }
 
-  await recordVote(ip, brownieId);
+  await recordVote(voterId, brownieId);
   return NextResponse.json({ success: true, votedFor: brownieId, changed: false });
 }
 
-export async function DELETE(req: Request) {
-  const ip = getClientIpFromRequest(req);
-  if (ip === "unknown") {
-    return NextResponse.json(
-      { success: false, message: "Could not identify voter." },
-      { status: 400 }
-    );
-  }
+export async function DELETE() {
+  const voterId = await getOrCreateVoterId();
 
-  const existing = await getVoterChoice(ip);
+  const existing = await getVoterChoice(voterId);
   if (!existing) {
     return NextResponse.json({ success: true, votedFor: null });
   }
 
-  await clearVote(ip, existing);
+  await clearVote(voterId, existing);
   return NextResponse.json({ success: true, votedFor: null, previousVote: existing });
 }

@@ -58,8 +58,8 @@ h1 {
 .card img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
-  background: #000;
+  object-fit: contain;
+  background: #fff;
 }
 
 .card .body {

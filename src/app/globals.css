@@ -36,10 +36,6 @@ h1 {
   font-weight: 800;
 }
 
-.scheels sup {
-  font-size: 0.45em;
-  vertical-align: super;
-}
 
 .subtitle {
   color: var(--muted);
